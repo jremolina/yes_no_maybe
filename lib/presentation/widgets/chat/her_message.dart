@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:yes_no_maybe/domain/entities/message.dart';
 
 class HerMessageBubble extends StatelessWidget {
-  const HerMessageBubble({super.key});
+  const HerMessageBubble({super.key, required this.message});
+  final Message message;
 
   @override
   Widget build(BuildContext context) {
@@ -13,28 +15,35 @@ class HerMessageBubble extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
               color: colors.secondary, borderRadius: BorderRadius.circular(20)),
-          child: const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
-            child: Text('Texto de prueba de ella',
-                style: TextStyle(color: Colors.white)),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10),
+            child:
+                Text(message.text, style: const TextStyle(color: Colors.white)),
           ),
         ),
         const SizedBox(height: 10),
-        _ImageBubble()
+        _ImageBubble(
+          imageurl: message.imageUrl!,
+        ),
       ],
     );
   }
 }
 
 class _ImageBubble extends StatelessWidget {
+  final String imageurl;
+
+  const _ImageBubble({required this.imageurl});
+
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return ClipRRect(
-      borderRadius: BorderRadius.circular(20),
+      borderRadius: BorderRadius.circular(15),
       child: Image.network(
-        'https://i.giphy.com/duzpaTbCUy9Vu.webp',
+        imageurl,
         height: 150,
-        //width: 70,
+        width: size.width * 0.7,
         fit: BoxFit.cover,
         loadingBuilder: (context, child, loadingProgress) {
           if (loadingProgress == null) return child;
